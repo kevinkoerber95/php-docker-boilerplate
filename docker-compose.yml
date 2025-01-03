@@ -1,0 +1,55 @@
+services:
+  application:
+    build: .
+    depends_on:
+      # Activate if you want to use MySQL instead of Postgres
+      #- mysql
+      - postgres
+      - mail
+    working_dir: /app
+    volumes:
+      - ./app/:/app/:cached
+      - ./docker/nginx.conf:/etc/nginx/conf.d/server.conf
+      - ./docker/settings.ini:/etc/php83/conf.d/settings.ini
+      - ./docker/xdebug.ini:/etc/php83/conf.d/xdebug.ini
+      - ${COMPOSER_CACHE}:/cache/composer:cached
+    ports:
+      - 80
+    environments:
+      - VIRTUAL_HOST=${COMPOSE_PROJECT_NAME}.docker
+      - VIRTUAL_PORT=80
+    env_file:
+      - etc/base.env
+      - etc/dev.env
+
+  postgres:
+    image: postgres:14-alpine
+    ports:
+      - 5432:5432
+    volumes:
+      - db:/var/lib/postgresql/data
+    env_file:
+      - etc/postgres.env
+
+  # Activate if you want to use MySQL instead of Postgres
+  mysql:
+    image: mysql:8.0
+    ports:
+      - 13306:3306
+    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+    volumes:
+      - db:/var/lib/mysql
+    env_file:
+      - etc/mysql.env
+
+  mail:
+    image: mailhog/mailhog
+    environment:
+      - VIRTUAL_HOST=mail.${COMPOSE_PROJECT_NAME}.docker
+      - VIRTUAL_PORT=8025
+    ports:
+      - 80
+
+volumes:
+  db:
+    driver: local
