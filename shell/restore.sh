@@ -33,4 +33,29 @@ case "$1" in
     echo " * skipping mysql restore, no such container"
   fi
   ;;
+"postgresql")
+  if [[ -n "$(dockerContainerId postgres)" ]]; then
+    if [ -f "${BACKUP_DIR}/${BACKUP_POSTGRES_FILE}" ]; then
+      logMsg "Starting PostgreSQL restore..."
+      POSTGRES_USER=$(dockerExecPostgres printenv POSTGRES_USER)
+      POSTGRES_PASSWORD=$(dockerExecPostgres printenv POSTGRES_PASSWORD)
+      POSTGRES_DB=$(dockerExecPostgres printenv POSTGRES_DB)
+
+      bzcat "${BACKUP_DIR}/${BACKUP_POSTGRES_FILE}" | dockerExecPostgres sh -c "PGPASSWORD=\"${POSTGRES_PASSWORD}\" psql -h postgres -U ${POSTGRES_USER} -d ${POSTGRES_DB}"
+      logMsg "Finished"
+    else
+      errorMsg "PostgreSQL backup file not found"
+      exit 1
+    fi
+  else
+    echo " * skipping postgresql restore, no such container"
+  fi
+  ;;
+###################################
+## Default
+###################################
+*)
+  echo "Unsupported database type: $1"
+  exit 1
+  ;;
 esac
