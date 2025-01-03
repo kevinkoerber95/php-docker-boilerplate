@@ -28,6 +28,7 @@ ROOT_DIR=$($READLINK -f "$SCRIPT_DIR/../")
 BACKUP_DIR=$($READLINK -f "$ROOT_DIR/backup")
 PUBLIC_DIR="$ROOT_DIR/public"
 BACKUP_MYSQL_FILE='mysql.sql.bz2'
+BACKUP_POSTGRES_FILE='postgres.sql.bz2'
 
 ### ANSI color escape codes
 RED='\033[0;31m'
@@ -92,6 +93,10 @@ dockerExecUser() {
 
 dockerExecMySQL() {
     docker exec -i "$(dockerContainerId mysql)" "$@"
+}
+
+dockerExecPostgres() {
+  docker exec -i "$(dockerContainerId postgres)" "$@"
 }
 
 dockerCopyFrom() {

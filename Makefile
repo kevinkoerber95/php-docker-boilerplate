@@ -86,6 +86,13 @@ mysql-backup: ## Backup MySQL
 mysql-restore: ## Restore MySQL
 	bash ./shell/restore.sh mysql
 
+##@ Postgres commands
+postgres-backup: ## Backup Postgres
+	bash ./shell/backup.sh postgresql
+
+postgres-restore: ## Restore Postgres
+	bash ./shell/restore.sh postgresql
+
 #############################
 # Argument fix workaround
 #############################
