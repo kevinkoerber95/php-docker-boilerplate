@@ -109,14 +109,14 @@ Environment configurations can be done in `.env` files inside the `etc/` folder.
 ## Services overview
 
 ### Web Server
-- Pre-configured with Apache
+- Pre-configured with Nginx
 - Pre-configured with Xdebug for debugging
 
 ### Database
 - Choose between MySQL or PostgreSQL for storage
 
 ### Mailing
-- Pre-configured mailhog service
+- Pre-configured Mailhog service
 
 ## Development Workflow
 
