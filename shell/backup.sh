@@ -25,7 +25,7 @@ case "$1" in
       rm -f -- "$${BACKUP_DIR}/${BACKUP_MYSQL_FILE}"
     fi
     MYSQL_ROOT_PASSWORD=$(dockerExecMySQL printenv MYSQL_ROOT_PASSWORD)
-    dockerExecMySQL sh -c "MYSQL_PWD=\"${MYSQL_ROOT_PASSWORD}\" mysqldump -h mysql -uroot --opt --single-transaction --events --routines --comments shopware" | bzip2 >"${BACKUP_DIR}/${BACKUP_MYSQL_FILE}"
+    dockerExecMySQL sh -c "MYSQL_PWD=\"${MYSQL_ROOT_PASSWORD}\" mysqldump -h mysql -uroot --opt --single-transaction --events --routines --comments application" | bzip2 >"${BACKUP_DIR}/${BACKUP_MYSQL_FILE}"
     logMsg "Finished"
     logMsg "You can find your backup file under: ${BACKUP_DIR}/${BACKUP_MYSQL_FILE}"
   else

@@ -15,7 +15,7 @@ services:
       - ${COMPOSER_CACHE}:/cache/composer:cached
     ports:
       - 80
-    environments:
+    environment:
       - VIRTUAL_HOST=${COMPOSE_PROJECT_NAME}.docker
       - VIRTUAL_PORT=80
     env_file:
@@ -32,15 +32,15 @@ services:
       - etc/postgres.env
 
   # Activate if you want to use MySQL instead of Postgres
-  mysql:
-    image: mysql:8.0
-    ports:
-      - 13306:3306
-    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
-    volumes:
-      - db:/var/lib/mysql
-    env_file:
-      - etc/mysql.env
+  #mysql:
+  #  image: mysql:8.0
+  #  ports:
+  #    - 13306:3306
+  #  command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+  #  volumes:
+  #    - db:/var/lib/mysql
+  #  env_file:
+  #    - etc/mysql.env
 
   mail:
     image: mailhog/mailhog

@@ -20,7 +20,6 @@ banner:
 up: ## Start Project
 	@make banner
 	$(docker-compose) up -d --remove-orphans --force-recreate
-	@make permissions
 	@make urls
 
 down: ## Stop and remove containers, networks, volumes and images
@@ -69,17 +68,13 @@ bash: shell
 root: ## Get root Bash of app container
 	$(docker-compose) exec application bash
 
-permissions:
-	$(docker-compose) exec -uroot application chown -R nobody:nobody /tmp
-	$(docker-compose) exec -uroot application chown -R nobody:nobody /cache/npm
-
 ## Print Project URIs
 urls:
 	echo "---------------------------------------------------"
 	echo "You can access your project at the following URLS:"
 	echo "---------------------------------------------------"
 	echo ""
-	echo "Application:          http://"${COMPOSE_PROJECT_NAME}".docker/"
+	echo "Application: http://"${COMPOSE_PROJECT_NAME}".docker/"
 	echo ""
 	echo "---------------------------------------------------"
 	echo ""
